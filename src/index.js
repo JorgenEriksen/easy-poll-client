@@ -2,12 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Landing from './pages/Landing';
+import LandingPage from './pages/LandingPage';
+import CreatePollPage from './pages/CreatePollPage';
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import ColorChangingBackground from './components/ColorChangingBackground';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Landing />
+    <BrowserRouter>
+    <ColorChangingBackground>
+      <Routes>
+        <Route path="/create-poll" element={<CreatePollPage />}/>
+        <Route  path="/" element={<LandingPage />}/>
+      </Routes>
+      </ColorChangingBackground>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
