@@ -75,10 +75,12 @@ const Landing = () => {
     <div className={classes.landingContainer}>
       <img src="/EasyPollLogo.png" alt="EasyPoll logo" className={classes.logo} />
       <div className={css(classes.landingFrontbox)}>
-        <TextField label="InviteToken" style={{ width: "100%" }} />
+      <a href="https://www.w3schools.com/">Create new poll?</a>
+        <TextField label="InviteToken" style={{ width: "100%", marginTop: '20px' }} />
         <Button variant="contained" style={classes.landingEnterButton}>
           Enter
         </Button>
+        
       </div>
     </div>
   );
