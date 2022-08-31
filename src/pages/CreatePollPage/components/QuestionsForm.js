@@ -18,7 +18,7 @@ import AddEditQuestionDialog from "./AddEditQuestionDialog";
 import Typography from "@mui/material/Typography";
 
 const QuestionsForm = ({ questions, setQuestions }) => {
-  const [openDialog, setOpenDialog] = useState(true);
+  const [openDialog, setOpenDialog] = useState(false);
   const [editQuestionIndex, setEditQuestionIndex] = useState(-1);
 
   const questionClick = (index) => {
@@ -66,7 +66,7 @@ const QuestionsForm = ({ questions, setQuestions }) => {
                 <EditIcon />
               </ListItemIcon>
 
-              <ListItemText primary={question.questionText} />
+              <ListItemText primary={question.title} />
             </ListItemButton>
           </ListItem>
         ))}

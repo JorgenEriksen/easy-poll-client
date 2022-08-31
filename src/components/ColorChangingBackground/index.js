@@ -18,7 +18,7 @@ const bgcolor = keyframes`
 }
 
 100% {
-    background-color: #864cbf
+    background-color: #45a3e5
 }
 `;
 

@@ -12,6 +12,7 @@ import { TextField, Button } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import { useAuth } from "../../hooks/auth";
 
 const classes = {
   width100: css`
@@ -25,28 +26,49 @@ const classes = {
 };
 
 const CreatePollPage = () => {
+  const auth = useAuth();
   const [adminIsParticipating, setAdminIsParticipating] = useState(true);
   const [displayNameInput, setDisplayNameInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([
-    { questionText: "Where to eat?", alternatives: ["one", "two"] },
+    {
+      title: "Where to eat?",
+      questionAlternatives: ["Peppes", "Dominos"],
+    },
+    { title: "How many pizzas?", questionAlternatives: ["1", "2", "3"] },
+    {
+      title: "What to drink?",
+      questionAlternatives: ["Pepsi", "Solo", "Sprite", "7up"],
+    },
   ]);
 
   const createPollGame = () => {
     const body = {
-      hasStarted: false,
       adminIsParticipating: adminIsParticipating,
+      hasStarted: false,
       adminUser: {
         displayName: displayNameInput,
       },
       questions: questions.map((question) => {
-        const alternatives = question.alternatives.map((a) => {
+        const alternatives = question.questionAlternatives.map((a) => {
           return { alternativeText: a };
         });
-        question.alternatives = alternatives;
+        question.questionAlternatives = alternatives;
         return question;
       }),
     };
     console.log(body);
+    setIsLoading(true);
+    createNewPollToAPI(body)
+      .then((e) => {
+        console.log(e.accessToken);
+        setIsLoading(false);
+        auth.login(e.accessToken, true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -74,6 +96,8 @@ const CreatePollPage = () => {
         label="DisplayName"
         disabled={!adminIsParticipating}
         className={classes.width100}
+        value={displayNameInput}
+        onChange={(e) => setDisplayNameInput(e.target.value)}
       />
       <br />
       <br />
@@ -87,6 +111,7 @@ const CreatePollPage = () => {
           variant="contained"
           startIcon={<PollIcon />}
           onClick={createPollGame}
+          disabled={isLoading}
         >
           Create
         </Button>

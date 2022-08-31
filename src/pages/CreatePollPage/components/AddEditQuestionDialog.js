@@ -35,7 +35,7 @@ const AddEditQuestionDialog = ({
   setQuestions,
   editQuestionIndex,
 }) => {
-  const [questionText, setQuestionText] = useState("");
+  const [questionTitle, setQuestionTitle] = useState("");
   const [alternatives, setAlternatives] = useState([]);
 
   useEffect(() => {
@@ -43,11 +43,11 @@ const AddEditQuestionDialog = ({
 
     if (editQuestionIndex >= 0) {
       const question = { ...questions[editQuestionIndex] };
-      setQuestionText(question.questionText);
-      setAlternatives(question.alternatives);
+      setQuestionTitle(question.title);
+      setAlternatives(question.questionAlternatives);
       return;
     }
-    setQuestionText("");
+    setQuestionTitle("");
     setAlternatives(["", ""]);
   }, [openDialog, editQuestionIndex]);
 
@@ -66,7 +66,7 @@ const AddEditQuestionDialog = ({
   const submit = () => {
     const questionsPlaceholder = [...questions];
     let newQuestionData = {
-      questionText: questionText,
+      title: questionTitle,
       alternatives: alternatives,
     };
     if (editQuestionIndex >= 0) {
@@ -93,8 +93,8 @@ const AddEditQuestionDialog = ({
       <DialogContent dividers>
         <TextField
           label="Question"
-          value={questionText}
-          onChange={(e) => setQuestionText(e.target.value)}
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
         />
         <div className={classes.alternativeTextField}>
           {alternatives.map((alternative, index) => (
