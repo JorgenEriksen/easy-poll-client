@@ -27,18 +27,18 @@ const PollNavigator = ({ children }) => {
 const App = () => {
   return (
     <React.StrictMode>
-      <AuthProvider>
-        <PollNavigator>
-          <BrowserRouter>
-            <ColorChangingBackground>
+      <ColorChangingBackground>
+        <AuthProvider>
+          <PollNavigator>
+            <BrowserRouter>
               <Routes>
                 <Route path="/create-poll" element={<CreatePollPage />} />
                 <Route path="/" element={<LandingPage />} />
               </Routes>
-            </ColorChangingBackground>
-          </BrowserRouter>
-        </PollNavigator>
-      </AuthProvider>
+            </BrowserRouter>
+          </PollNavigator>
+        </AuthProvider>
+      </ColorChangingBackground>
     </React.StrictMode>
   );
 };

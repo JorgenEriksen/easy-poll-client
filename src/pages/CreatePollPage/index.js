@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { css, cx, keyframes } from "@emotion/css";
-import PaperWithIcon from "../../components/PaperWithIcon";
+import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
 import QuestionsForm from "./components/QuestionsForm";
 import Divider from "@mui/material/Divider";
 import PollIcon from "@mui/icons-material/Poll";
 import { createNewPollToAPI } from "../../utils/apiRequests";
+import { useNavigate } from "react-router-dom";
 
 // mui
 import { TextField, Button } from "@mui/material";
@@ -13,6 +14,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useAuth } from "../../hooks/auth";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const classes = {
   width100: css`
@@ -27,6 +29,7 @@ const classes = {
 
 const CreatePollPage = () => {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [adminIsParticipating, setAdminIsParticipating] = useState(true);
   const [displayNameInput, setDisplayNameInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,9 +64,9 @@ const CreatePollPage = () => {
     setIsLoading(true);
     createNewPollToAPI(body)
       .then((e) => {
-        console.log(e.accessToken);
         setIsLoading(false);
         auth.login(e.accessToken, true);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -72,7 +75,7 @@ const CreatePollPage = () => {
   };
 
   return (
-    <PaperWithIcon>
+    <PaperBoxWithIcon>
       <NavLink
         to={{
           pathname: "/",
@@ -116,7 +119,8 @@ const CreatePollPage = () => {
           Create
         </Button>
       </div>
-    </PaperWithIcon>
+      {isLoading && <LinearProgress />}
+    </PaperBoxWithIcon>
   );
 };
 

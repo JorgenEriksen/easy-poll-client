@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { authenticateAccessToken } from "../utils/apiRequests";
-import { getAccessToken, removeAccessToken } from "../utils/localstorage";
+
+import store from "../utils/localstorage";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const AuthContext = createContext();
@@ -19,24 +20,23 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = getAccessToken();
+    const token = store.getAccessToken();
     if (!token) {
       setIsLoading(false);
       return;
     }
     authenticateAccessToken()
       .then((e) => {
-        console.log("her?");
         if (e.isValid) {
           login(token, e.isAdmin);
         }
         setIsLoading(false);
       })
-      .catch((error) => console.log("her?"));
+      .catch((error) => setIsLoading(false));
   }, []);
 
   const logout = () => {
-    removeAccessToken();
+    store.removeAccessToken();
     setValidAccessToken(null);
     setIsAdmin(false);
   };
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
   const login = (token, isAdmin) => {
     setValidAccessToken(token);
     setIsAdmin(isAdmin);
+    store.setAccessToken(token);
   };
 
   if (isLoading) {

@@ -3,7 +3,7 @@ import { css, cx, keyframes } from "@emotion/css";
 import { TextField, Button } from "@mui/material";
 import ColorChangingBackground from "../../components/ColorChangingBackground";
 import { NavLink } from "react-router-dom";
-import PaperWithIcon from "../../components/PaperWithIcon";
+import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
 import "./index.css";
 
 const classes = {
@@ -43,23 +43,22 @@ const LandingPage = () => {
   const [inviteCodeInput, setInviteCodeInput] = useState("");
 
   return (
-
-      <PaperWithIcon>
-        <NavLink
-          to={{
-            pathname: "/create-poll",
-          }}
-        >
-          Create new poll?
-        </NavLink>
-        <TextField
-          label="InviteToken"
-          style={{ width: "100%", marginTop: "20px" }}
-        />
-        <Button variant="contained" style={classes.landingEnterButton}>
-          Enter
-        </Button>
-      </PaperWithIcon>
+    <PaperBoxWithIcon>
+      <NavLink
+        to={{
+          pathname: "/create-poll",
+        }}
+      >
+        Create new poll?
+      </NavLink>
+      <TextField
+        label="InviteToken"
+        style={{ width: "100%", marginTop: "20px" }}
+      />
+      <Button variant="contained" style={classes.landingEnterButton}>
+        Enter
+      </Button>
+    </PaperBoxWithIcon>
   );
 };
 

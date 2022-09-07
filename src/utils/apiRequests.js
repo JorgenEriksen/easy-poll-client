@@ -1,11 +1,13 @@
-import { getAccessToken } from "./localstorage";
+import store from "./localstorage";
 const axios = require("axios").default;
-
 const apiUrl = process.env.REACT_APP_API_URL;
+
+const GET = "GET";
+const POST = "POST";
 
 export const createNewPollToAPI = async (body) => {
   try {
-    return await postRequest(apiUrl + "PollGame", body);
+    return await request(apiUrl + "PollGame", POST, body);
   } catch (error) {
     throw error;
   }
@@ -13,28 +15,38 @@ export const createNewPollToAPI = async (body) => {
 
 export const authenticateAccessToken = async () => {
   try {
-    return await postRequest(apiUrl + "TempUser/Authenticate");
+    return await request(apiUrl + "TempUser/Authenticate", POST);
   } catch (error) {
     throw error;
   }
 };
 
-const postRequest = async (url, body) => {
+export const getQuestionFromAPI = async () => {
+  try {
+    return await request(apiUrl + "Question", GET);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const request = async (url, requestType, body) => {
   let config = {
     headers: {
-      Authorization: getAccessToken(),
+      Authorization: store.getAccessToken(),
     },
   };
 
   try {
-    const response = await axios.post(url, body, config);
+    let response;
+    if (requestType === POST) response = await axios.post(url, body, config);
+    if (requestType === GET) response = await axios.get(url, config);
     if (response.status === 200) {
       return response.data;
     }
     throw new Error("Something went wrong");
   } catch (error) {
     if (!error.status) {
-      throw new Error("Network problem");
+      throw new Error(error.response.data);
     }
     throw new Error(error.response.data);
   }
