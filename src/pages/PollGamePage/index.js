@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
+import PaperBoxContainer from "../../components/PaperBoxContainer";
 import PaperBox from "../../components/PaperBox";
 import { WaitingScreen } from "./components/WaitingScreen";
 import PollScreen from "./components/PollScreen";
@@ -24,13 +25,15 @@ const PollGamePage = () => {
   }, []);
 
   return (
-    <PaperBox>
-      {!hasStarted ? (
-        <WaitingScreen />
-      ) : (
-        <PollScreen alternatives={alternatives} />
-      )}
-    </PaperBox>
+    <PaperBoxContainer>
+      <PaperBox>
+        {!hasStarted ? (
+          <WaitingScreen />
+        ) : (
+          <PollScreen alternatives={alternatives} />
+        )}
+      </PaperBox>
+    </PaperBoxContainer>
   );
 };
 
