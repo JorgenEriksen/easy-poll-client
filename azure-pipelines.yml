@@ -10,8 +10,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  projectFolder: 'src/react'
-  buildOutputFolder: 'src/react/build'
+  uiSource: '/src'
+  uiBuild: '$(uiSource)/build'
 
 steps:
 - task: NodeTool@0
@@ -20,26 +20,23 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    pushd $(uiSource)
     npm install
     npm run build
+    popd
   displayName: 'npm install and build'
 
-
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      $(Build.SourcesDirectory)/src/**
-      $(Build.SourcesDirectory)/public/**
-      $(Build.SourcesDirectory)/package*.json
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+    rootFolderOrFile: '$(uiBuild)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
-  inputs: 
-    PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-    ArtifactName: 'www' # output artifact named www
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
