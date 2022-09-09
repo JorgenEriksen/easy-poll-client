@@ -46,3 +46,5 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)/npm'
     artifactName: npm
   displayName: 'Publish npm artifact'
+
+- task: PublishBuildArtifacts@1
