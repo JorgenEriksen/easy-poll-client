@@ -20,7 +20,7 @@ steps:
     versionSpec: '16.16.0'
   displayName: 'Install Node.js'
 
-- script: |
+- script: | 
     pushd $(uiSource)
     npm install
     npm run build
