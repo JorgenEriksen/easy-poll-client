@@ -28,7 +28,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: |
-      $(Build.SourcesDirectory)/src/**
+      $(Build.SourcesDirectory)/src
       $(Build.SourcesDirectory)/public/**
       $(Build.SourcesDirectory)/package*.json
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
