@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  projectFolder: 'src/react'
+  buildOutputFolder: 'src/react/build'
+
 steps:
 - task: NodeTool@0
   inputs:
