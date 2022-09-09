@@ -6,12 +6,13 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
-
 variables:
   uiSource: 'src'
   uiBuild: '$(uiSource)/build'
+
+
+pool:
+  vmImage: ubuntu-latest
 
 steps:
 - task: NodeTool@0
