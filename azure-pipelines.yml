@@ -6,13 +6,12 @@
 trigger:
 - master
 
-variables:
-  uiSource: 'src'
-  uiBuild: '$(uiSource)/build'
-
-
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  projectFolder: 'src/react'
+  buildOutputFolder: 'src/react/build'
 
 steps:
 - task: NodeTool@0
@@ -20,24 +19,27 @@ steps:
     versionSpec: '16.16.0'
   displayName: 'Install Node.js'
 
-- script: | 
-    pushd $(uiSource)
+- script: |
     npm install
     npm run build
-    popd
   displayName: 'npm install and build'
 
+
+- task: CopyFiles@2
+  inputs:
+    Contents: |
+      $(Build.SourcesDirectory)/src/**
+      $(Build.SourcesDirectory)/public/**
+      $(Build.SourcesDirectory)/package*.json
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(uiBuild)'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp_$(Build.BuildNumber).zip'
     replaceExistingArchive: true
-
 - task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
+  inputs: 
+    PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+    ArtifactName: 'www' # output artifact named www
