@@ -20,29 +20,29 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    pushd $(projectFolder) && npm install && popd
-    pushd $(projectFolder) && npm run build && popd
-  
+    npm install
+  displayName: 'npm install'
 
-## Copy the client to the staging directory
+- script: |
+    npm run build
+  displayName: 'npm build'
+
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(buildOutputFolder)' 
-    contents: '**/*' 
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-    cleanTargetFolder: true
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '*.tgz' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy npm package'
 
-## Archive the files into a zip file for publishing
-- task: ArchiveFiles@2
+- task: CopyFiles@2
   inputs:
-    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    includeRootFolder: false
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: 'package.json' 
+    targetFolder: $(Build.ArtifactStagingDirectory)/npm
+  displayName: 'Copy package.json'   
 
-## Publish the zip file
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-
-
+    targetPath: '$(Build.ArtifactStagingDirectory)/npm'
+    artifactName: npm
+  displayName: 'Publish npm artifact'
