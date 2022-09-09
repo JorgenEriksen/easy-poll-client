@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { authenticateAccessToken } from "../utils/apiRequests";
+import { authenticateAccessTokenAPI } from "../utils/apiRequests";
 
 import store from "../utils/localstorage";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
       return;
     }
-    authenticateAccessToken()
+    authenticateAccessTokenAPI()
       .then((e) => {
         if (e.isValid) {
           login(token, e.isAdmin);
@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         validAccessToken,
+        isAdmin,
         login,
         logout,
       }}

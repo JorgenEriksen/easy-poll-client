@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { css, cx, keyframes } from "@emotion/css";
+import { css } from "@emotion/css";
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -49,7 +49,7 @@ const AddEditQuestionDialog = ({
     }
     setQuestionTitle("");
     setAlternatives(["", ""]);
-  }, [openDialog, editQuestionIndex]);
+  }, [questions, openDialog, editQuestionIndex]);
 
   const addAlternative = () => {
     const alternativesPlaceholder = [...alternatives];

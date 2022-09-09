@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { css, cx, keyframes } from "@emotion/css";
+import { css } from "@emotion/css";
 import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
 import QuestionsForm from "./components/QuestionsForm";
 import Divider from "@mui/material/Divider";
 import PollIcon from "@mui/icons-material/Poll";
-import { createNewPollToAPI } from "../../utils/apiRequests";
+import { createNewPollAPI } from "../../utils/apiRequests";
 import { useNavigate } from "react-router-dom";
 
 // mui
@@ -13,7 +13,7 @@ import { TextField, Button } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/useAuth";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const classes = {
@@ -62,7 +62,7 @@ const CreatePollPage = () => {
     };
     console.log(body);
     setIsLoading(true);
-    createNewPollToAPI(body)
+    createNewPollAPI(body)
       .then((e) => {
         setIsLoading(false);
         auth.login(e.accessToken, true);

@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
-import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
 import PaperBoxContainer from "../../components/PaperBoxContainer";
 import PaperBox from "../../components/PaperBox";
 import { WaitingScreen } from "./components/WaitingScreen";
 import PollScreen from "./components/PollScreen";
-import { getQuestionFromAPI } from "../../utils/apiRequests";
+import { getQuestionAPI } from "../../utils/apiRequests";
 
 // https://elfsight.com/wp-content/uploads/2020/08/poll-builder-hero-image.png
 const PollGamePage = () => {
   const [alternatives, setAlternatives] = useState([]);
   const [hasStarted, setHasStarted] = useState(false);
+  const [tempUsers, setTempUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    getQuestionFromAPI()
+    getQuestionAPI()
       .then((data) => {
+        console.log(data);
         setIsAdmin(data.isAdmin);
         setHasStarted(data.hasStarted);
+        setTempUsers(data.tempUsers);
+        setAlternatives([]);
       })
       .catch((error) => {
-        console.log("asd");
+        console.log("error");
         console.log(error);
       });
   }, []);
@@ -28,7 +31,7 @@ const PollGamePage = () => {
     <PaperBoxContainer>
       <PaperBox>
         {!hasStarted ? (
-          <WaitingScreen />
+          <WaitingScreen tempUsers={tempUsers} isAdmin={isAdmin} />
         ) : (
           <PollScreen alternatives={alternatives} />
         )}

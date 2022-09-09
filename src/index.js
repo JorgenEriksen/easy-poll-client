@@ -4,21 +4,16 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import LandingPage from "./pages/LandingPage";
 import CreatePollPage from "./pages/CreatePollPage";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ColorChangingBackground from "./components/ColorChangingBackground";
-import { AuthProvider } from "./hooks/auth";
-import { useAuth } from "./hooks/auth";
+import { AuthProvider } from "./hooks/useAuth";
+import { useAuth } from "./hooks/useAuth";
 import PollGamePage from "./pages/PollGamePage";
+import { SnackbarProvider } from "./hooks/useSnackbar";
 
 const PollNavigator = ({ children }) => {
-  const auth = useAuth();
-  if (Boolean(auth.validAccessToken)) {
+  const { validAccessToken } = useAuth();
+  if (Boolean(validAccessToken)) {
     return <PollGamePage />;
   }
   return <>{children}</>;
@@ -29,14 +24,16 @@ const App = () => {
     <React.StrictMode>
       <ColorChangingBackground>
         <AuthProvider>
-          <PollNavigator>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/create-poll" element={<CreatePollPage />} />
-                <Route path="/" element={<LandingPage />} />
-              </Routes>
-            </BrowserRouter>
-          </PollNavigator>
+          <SnackbarProvider>
+            <PollNavigator>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/create-poll" element={<CreatePollPage />} />
+                  <Route path="/" element={<LandingPage />} />
+                </Routes>
+              </BrowserRouter>
+            </PollNavigator>
+          </SnackbarProvider>
         </AuthProvider>
       </ColorChangingBackground>
     </React.StrictMode>
