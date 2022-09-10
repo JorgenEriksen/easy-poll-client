@@ -11,6 +11,7 @@ const PollGamePage = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [tempUsers, setTempUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
 
   useEffect(() => {
     getQuestionAPI()
@@ -19,6 +20,7 @@ const PollGamePage = () => {
         setIsAdmin(data.isAdmin);
         setHasStarted(data.hasStarted);
         setTempUsers(data.tempUsers);
+        setInviteCode(data.inviteCode);
         setAlternatives([]);
       })
       .catch((error) => {
@@ -31,7 +33,11 @@ const PollGamePage = () => {
     <PaperBoxContainer>
       <PaperBox>
         {!hasStarted ? (
-          <WaitingScreen tempUsers={tempUsers} isAdmin={isAdmin} />
+          <WaitingScreen
+            tempUsers={tempUsers}
+            isAdmin={isAdmin}
+            inviteCode={inviteCode}
+          />
         ) : (
           <PollScreen alternatives={alternatives} />
         )}

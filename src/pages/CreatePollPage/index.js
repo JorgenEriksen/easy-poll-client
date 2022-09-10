@@ -28,7 +28,7 @@ const classes = {
 };
 
 const CreatePollPage = () => {
-  const auth = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [adminIsParticipating, setAdminIsParticipating] = useState(true);
   const [displayNameInput, setDisplayNameInput] = useState("");
@@ -65,7 +65,7 @@ const CreatePollPage = () => {
     createNewPollAPI(body)
       .then((e) => {
         setIsLoading(false);
-        auth.login(e.accessToken, true);
+        login(e.accessToken, true);
         navigate("/");
       })
       .catch((error) => {

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { css } from "@emotion/css";
-import { TextField, Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import PaperBoxWithIcon from "../../components/PaperBoxWithIcon";
-import { authenticateInviteCodeAPI } from "../../utils/apiRequests";
+import {
+  authenticateInviteCodeAPI,
+  joinPollGameAPI,
+} from "../../utils/apiRequests";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import Collapse from "@mui/material/Collapse";
-
+import { TextField, Button } from "@mui/material";
 import "./index.css";
 
 const classes = {
@@ -42,25 +46,38 @@ const classes = {
 };
 
 const LandingPage = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const { openSnack } = useSnackbar();
   const [displayNameInput, setDisplayNameInput] = useState("");
   const [inviteCodeInput, setInviteCodeInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
-
-  //joinPollGameAPI
 
   const enterInviteCodeButton = () => {
     authenticateInviteCodeAPI(inviteCodeInput)
       .then(() => {
         setStep(2);
-        console.log("works");
       })
       .catch((error) => {
         openSnack(error.message, "warning");
       });
   };
 
-  const enterDisplayNameButton = () => {};
+  const enterDisplayNameButton = () => {
+    joinPollGameAPI({
+      displayName: displayNameInput,
+      inviteCode: inviteCodeInput,
+    })
+      .then((accessToken) => {
+        setIsLoading(false);
+        login(accessToken, true);
+        navigate("/");
+      })
+      .catch((error) => {
+        openSnack(error.message, "error");
+      });
+  };
 
   return (
     <PaperBoxWithIcon>
