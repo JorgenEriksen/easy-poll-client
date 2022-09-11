@@ -3,11 +3,11 @@ export const WaitingScreen = ({ tempUsers, inviteCode }) => {
     <div>
       <h2>Invite code: {inviteCode}</h2>
       <h4>Waiting for people to join...</h4>
-      <p>
+      <div>
         {tempUsers.map((user, index) => (
           <p key={index}>{user.displayName}</p>
         ))}
-      </p>
+      </div>
     </div>
   );
 };

@@ -41,9 +41,9 @@ export const authenticateAccessTokenAPI = async () => {
   }
 };
 
-export const getQuestionAPI = async () => {
+export const getPollGameDataAPI = async () => {
   try {
-    return await request(apiUrl + "Question", GET);
+    return await request(apiUrl + "TempUser/PollGameData", GET);
   } catch (error) {
     throw error;
   }
