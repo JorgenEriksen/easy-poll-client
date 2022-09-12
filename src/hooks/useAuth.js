@@ -17,6 +17,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [validAccessToken, setValidAccessToken] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [displayName, setDisplayName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,9 +28,7 @@ export const AuthProvider = ({ children }) => {
     }
     authenticateAccessTokenAPI()
       .then((e) => {
-        if (e.isValid) {
-          login(token, e.isAdmin);
-        }
+        login(e);
         setIsLoading(false);
       })
       .catch((error) => setIsLoading(false));
@@ -41,10 +40,12 @@ export const AuthProvider = ({ children }) => {
     setIsAdmin(false);
   };
 
-  const login = (token, isAdmin) => {
-    setValidAccessToken(token);
-    setIsAdmin(isAdmin);
-    store.setAccessToken(token);
+  // token is always valid this function
+  const login = (userData) => {
+    setValidAccessToken(userData.accessToken);
+    setIsAdmin(userData.isAdmin);
+    setDisplayName(userData.displayName);
+    store.setAccessToken(userData.accessToken);
   };
 
   if (isLoading) {
@@ -56,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         validAccessToken,
         isAdmin,
+        displayName,
         login,
         logout,
       }}

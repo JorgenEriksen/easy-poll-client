@@ -57,8 +57,6 @@ const request = async (url, requestType, body, params) => {
     params: params,
   };
 
-  console.log(config);
-
   try {
     let response;
     if (requestType === POST) response = await axios.post(url, body, config);

@@ -60,12 +60,11 @@ const CreatePollPage = () => {
         return question;
       }),
     };
-    console.log(body);
     setIsLoading(true);
     createNewPollAPI(body)
-      .then((e) => {
+      .then((userData) => {
         setIsLoading(false);
-        login(e.accessToken, true);
+        login(userData);
         navigate("/");
       })
       .catch((error) => {
