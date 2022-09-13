@@ -6,6 +6,7 @@ import { WaitingScreen } from "./components/WaitingScreen";
 import PollScreen from "./components/PollScreen";
 import { getPollGameDataAPI } from "../../utils/apiRequests";
 import { useAuth } from "../../hooks/useAuth";
+import ContentLoader from "../../components/ContentLoader";
 
 // https://elfsight.com/wp-content/uploads/2020/08/poll-builder-hero-image.png
 const PollGamePage = () => {
@@ -13,16 +14,23 @@ const PollGamePage = () => {
   const { isAdmin } = useAuth();
   const [gameId, setGameId] = useState(0);
   const [hubConnection, setHubConnection] = useState();
-  const [alternatives, setAlternatives] = useState([]);
+  const [title, setTitle] = useState("");
+  const [question, setQuestion] = useState({
+    title: "",
+    questionAlternatives: [],
+    questionOrder: -1,
+  });
   const [hasStarted, setHasStarted] = useState(false);
   const [tempUsers, setTempUsers] = useState([]);
   const [inviteCode, setInviteCode] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getPollGameDataAPI()
       .then((e) => {
         const data = e.result;
         applyDataFromAPI(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log("error");
@@ -62,25 +70,29 @@ const PollGamePage = () => {
   };
 
   const applyDataFromAPI = (data) => {
+    console.log(data);
     setGameId(data.id);
     setHasStarted(data.hasStarted);
     setTempUsers(data.tempUsers);
     setInviteCode(data.inviteCode);
-    setAlternatives([]);
+    setQuestion(data.question);
+    setTitle(data.title);
   };
 
   return (
     <PaperBoxContainer>
       <PaperBox>
-        {!hasStarted ? (
-          <WaitingScreen
-            tempUsers={tempUsers}
-            isAdmin={isAdmin}
-            inviteCode={inviteCode}
-          />
-        ) : (
-          <PollScreen alternatives={alternatives} />
-        )}
+        <ContentLoader isLoading={isLoading}>
+          {!hasStarted ? (
+            <WaitingScreen
+              tempUsers={tempUsers}
+              isAdmin={isAdmin}
+              inviteCode={inviteCode}
+            />
+          ) : (
+            <PollScreen question={question} />
+          )}
+        </ContentLoader>
       </PaperBox>
     </PaperBoxContainer>
   );

@@ -60,7 +60,7 @@ const LandingPage = () => {
       openSnack("Invite code can't be empty", "warning");
       return;
     }
-    if (inviteCodeInput.length !== 5) {
+    if (inviteCodeInput.length !== 6) {
       openSnack("Invite code needs to be six characters long", "warning");
       return;
     }

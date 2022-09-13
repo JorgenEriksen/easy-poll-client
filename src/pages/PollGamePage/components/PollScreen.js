@@ -1,10 +1,11 @@
 import AlternativeCard from "./AlternativeCard";
 
-const PollScreen = ({ alternatives }) => {
+const PollScreen = ({ question, title }) => {
   return (
     <>
-      {[1, 2, 3].map((alternative, index) => (
-        <AlternativeCard key={index} />
+      <h1>{question.title}</h1>
+      {question.questionAlternatives.map((alternative, index) => (
+        <AlternativeCard key={index} text={alternative.alternativeText} />
       ))}
     </>
   );

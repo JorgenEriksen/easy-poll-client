@@ -1,5 +1,5 @@
-const AlternativeCard = () => {
-  return <div>alternative</div>;
+const AlternativeCard = ({ text }) => {
+  return <div>{text}</div>;
 };
 
 export default AlternativeCard;
