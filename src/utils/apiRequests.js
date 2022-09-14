@@ -7,6 +7,14 @@ const POST = "POST";
 const PUT = "PUT";
 const DELETE = "DELETE";
 
+export const submitQuestionAnswer = async (body) => {
+  try {
+    return await request(apiUrl + "Question", POST, body);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const startPollGameAPI = async () => {
   try {
     return await request(apiUrl + "PollGame/Start", PUT);

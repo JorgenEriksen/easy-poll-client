@@ -1,6 +1,8 @@
 import { useState } from "react";
 import AlternativeCard from "./AlternativeCard";
 import ButtonWithLoader from "../../../components/ButtonWithLoader";
+import { submitQuestionAnswer } from "../../../utils/apiRequests";
+import WaitingForPlayersAnimation from "./WaitingForPlayersAnimation";
 
 const PollScreen = ({ question, title, isAdmin }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,6 +10,17 @@ const PollScreen = ({ question, title, isAdmin }) => {
   const nextQuestionButtonClick = () => {
     setIsLoading(true);
   };
+
+  const alternativeCardClick = (index, alternativeId) => {
+    setSelectedAlternativeIndex(index);
+    var body = {
+      questionId: question.id,
+      alternativeId: alternativeId,
+    };
+    console.log(body);
+    submitQuestionAnswer(body);
+  };
+
   return (
     <>
       <h1>{question.title}</h1>
@@ -15,11 +28,13 @@ const PollScreen = ({ question, title, isAdmin }) => {
         <AlternativeCard
           key={index}
           index={index}
-          text={alternative.alternativeText}
+          alternative={alternative}
           selected={selectedAlternativeIndex === index}
-          setSelectedAlternativeIndex={setSelectedAlternativeIndex}
+          alternativeCardClick={alternativeCardClick}
         />
       ))}
+
+      <WaitingForPlayersAnimation />
 
       {isAdmin && (
         <div>
@@ -28,7 +43,7 @@ const PollScreen = ({ question, title, isAdmin }) => {
             isLoading={isLoading}
             style={{ width: "100%", marginTop: "20px" }}
           >
-            Next Question
+            Force next Question
           </ButtonWithLoader>
         </div>
       )}

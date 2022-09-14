@@ -31,21 +31,21 @@ const classes = {
 };
 
 const AlternativeCard = ({
-  text,
+  alternative,
   index,
   selected,
-  setSelectedAlternativeIndex,
+  alternativeCardClick,
 }) => {
   return (
     <div className={classes.AlternativeCardSpaceContainer}>
       <div
-        onClick={() => setSelectedAlternativeIndex(index)}
+        onClick={() => alternativeCardClick(index, alternative.id)}
         className={classNames(
           classes.AlternativeCard,
           selected ? classes.SelectedAlternativeCard : null
         )}
       >
-        {text}
+        {alternative.alternativeText}
       </div>
     </div>
   );
