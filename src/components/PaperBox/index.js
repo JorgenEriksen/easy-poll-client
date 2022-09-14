@@ -10,8 +10,12 @@ const classes = {
   `,
 };
 
-const PaperBox = ({ children }) => {
-  return <div className={classes.paperContainer}>{children}</div>;
+const PaperBox = ({ style, children }) => {
+  return (
+    <div style={style} className={classes.paperContainer}>
+      {children}
+    </div>
+  );
 };
 
 export default PaperBox;

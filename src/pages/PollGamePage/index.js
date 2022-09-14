@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import PaperBoxContainer from "../../components/PaperBoxContainer";
 import PaperBox from "../../components/PaperBox";
-import { WaitingScreen } from "./components/WaitingScreen";
+import WaitingScreen from "./components/WaitingScreen";
+import ResultScreen from "./components/ResultScreen";
 import PollScreen from "./components/PollScreen";
 import { getPollGameDataAPI } from "../../utils/apiRequests";
 import { useAuth } from "../../hooks/useAuth";
@@ -81,7 +82,7 @@ const PollGamePage = () => {
 
   return (
     <PaperBoxContainer>
-      <PaperBox>
+      <PaperBox style={{ width: "100%" }}>
         <ContentLoader isLoading={isLoading}>
           {!hasStarted ? (
             <WaitingScreen
@@ -90,7 +91,7 @@ const PollGamePage = () => {
               inviteCode={inviteCode}
             />
           ) : (
-            <PollScreen question={question} />
+            <PollScreen question={question} isAdmin={isAdmin} />
           )}
         </ContentLoader>
       </PaperBox>

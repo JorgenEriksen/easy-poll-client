@@ -4,7 +4,7 @@ import ButtonWithLoader from "../../../components/ButtonWithLoader";
 import { startPollGameAPI } from "../../../utils/apiRequests";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 
-export const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
+const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
   const { openSnack } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,3 +44,5 @@ export const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
     </div>
   );
 };
+
+export default WaitingScreen;
