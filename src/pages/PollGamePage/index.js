@@ -50,7 +50,6 @@ const PollGamePage = () => {
       console.log("Connection!");
       console.log(gameId);
       hubConnection.on("Socket-PollGameId-" + gameId, (dataFromAPI) => {
-        console.log("get");
         applyDataFromAPI(dataFromAPI);
       });
     }

@@ -21,7 +21,14 @@ const ResultScreen = ({ results, tempUsers }) => {
     <div>
       <h2>Result</h2>
       {resultWithDisplayName.map((result, index) => (
-        <BarChart key={index} result={result} />
+        <div style={{ border: "1px solid black", marginBottom: "20px" }}>
+          <h3 style={{ paddingLeft: "20px" }}>{result.title}</h3>
+          <BarChart
+            key={index}
+            result={result}
+            numberOfUsers={tempUsers.length}
+          />
+        </div>
       ))}
     </div>
   );
