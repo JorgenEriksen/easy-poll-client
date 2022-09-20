@@ -12,11 +12,14 @@ const classes = {
   `,
 };
 
-const WaitingForPlayersAnimation = () => {
+const WaitingForPlayersAnimation = ({ numberOfPlayers, numberOfAnswers }) => {
   return (
     <div className={classes.container}>
-      <CircularProgress className={classes.progressBar} />{" "}
-      <span>Waiting for other players to answer</span>
+      <CircularProgress className={classes.progressBar} />
+      <span>
+        Waiting for other players to answer ({numberOfAnswers}/{numberOfPlayers}
+        )
+      </span>
     </div>
   );
 };

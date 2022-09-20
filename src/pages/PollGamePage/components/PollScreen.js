@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AlternativeCard from "./AlternativeCard";
 import ButtonWithLoader from "../../../components/ButtonWithLoader";
 import { submitQuestionAnswer } from "../../../utils/apiRequests";
 import WaitingForPlayersAnimation from "./WaitingForPlayersAnimation";
 
-const PollScreen = ({ question, title, isAdmin }) => {
+const PollScreen = ({
+  question,
+  isAdmin,
+  tempUsers,
+  numberOfAnswers,
+  selectedAlternativeIndex,
+  setSelectedAlternativeIndex,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedAlternativeIndex, setSelectedAlternativeIndex] = useState(1);
+
   const nextQuestionButtonClick = () => {
     setIsLoading(true);
   };
@@ -17,7 +24,6 @@ const PollScreen = ({ question, title, isAdmin }) => {
       questionId: question.id,
       alternativeId: alternativeId,
     };
-    console.log(body);
     submitQuestionAnswer(body);
   };
 
@@ -34,7 +40,10 @@ const PollScreen = ({ question, title, isAdmin }) => {
         />
       ))}
 
-      <WaitingForPlayersAnimation />
+      <WaitingForPlayersAnimation
+        numberOfPlayers={tempUsers.length}
+        numberOfAnswers={numberOfAnswers}
+      />
 
       {isAdmin && (
         <div>

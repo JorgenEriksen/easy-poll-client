@@ -15,16 +15,18 @@ const PollGamePage = () => {
   const { isAdmin } = useAuth();
   const [gameId, setGameId] = useState(0);
   const [hubConnection, setHubConnection] = useState();
-  const [title, setTitle] = useState("");
+  const [results, setResults] = useState({});
   const [question, setQuestion] = useState({
     title: "",
     questionAlternatives: [],
     questionOrder: -1,
   });
-  const [hasStarted, setHasStarted] = useState(false);
+  const [gameStatus, setGameStatus] = useState("NotStarted");
   const [tempUsers, setTempUsers] = useState([]);
   const [inviteCode, setInviteCode] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [numberOfAnswers, setNumberOfAnswers] = useState(0);
+  const [selectedAlternativeIndex, setSelectedAlternativeIndex] = useState(-1);
 
   useEffect(() => {
     getPollGameDataAPI()
@@ -46,7 +48,9 @@ const PollGamePage = () => {
   useEffect(() => {
     if (hubConnection && gameId > 0) {
       console.log("Connection!");
+      console.log(gameId);
       hubConnection.on("Socket-PollGameId-" + gameId, (dataFromAPI) => {
+        console.log("get");
         applyDataFromAPI(dataFromAPI);
       });
     }
@@ -73,25 +77,41 @@ const PollGamePage = () => {
   const applyDataFromAPI = (data) => {
     console.log(data);
     setGameId(data.id);
-    setHasStarted(data.hasStarted);
     setTempUsers(data.tempUsers);
     setInviteCode(data.inviteCode);
     setQuestion(data.question);
-    setTitle(data.title);
+    setGameStatus(data.status);
+    setResults(data.questions);
+    setNumberOfAnswers(data.numberOfAnswers);
+    // if new question, reset selected alternative for user
+    if (data.question && data.question.title !== question.title) {
+      setSelectedAlternativeIndex(-1);
+    }
   };
 
   return (
     <PaperBoxContainer>
       <PaperBox style={{ width: "100%" }}>
         <ContentLoader isLoading={isLoading}>
-          {!hasStarted ? (
+          {gameStatus == "NotStarted" && (
             <WaitingScreen
               tempUsers={tempUsers}
               isAdmin={isAdmin}
               inviteCode={inviteCode}
             />
-          ) : (
-            <PollScreen question={question} isAdmin={isAdmin} />
+          )}
+          {gameStatus == "Started" && (
+            <PollScreen
+              tempUsers={tempUsers}
+              question={question}
+              isAdmin={isAdmin}
+              numberOfAnswers={numberOfAnswers}
+              selectedAlternativeIndex={selectedAlternativeIndex}
+              setSelectedAlternativeIndex={setSelectedAlternativeIndex}
+            />
+          )}
+          {gameStatus == "Ended" && (
+            <ResultScreen results={results} tempUsers={tempUsers} />
           )}
         </ContentLoader>
       </PaperBox>
