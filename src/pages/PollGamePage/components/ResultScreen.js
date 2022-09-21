@@ -6,11 +6,13 @@ import ButtonWithLoader from "../../../components/ButtonWithLoader";
 import { deletePollGameAPI } from "../../../utils/apiRequests";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 const ResultScreen = ({ results, tempUsers, isAdmin }) => {
   const [resultWithDisplayName, setResultWithDisplayName] = useState([]);
   const { openSnack } = useSnackbar();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const ResultScreen = ({ results, tempUsers, isAdmin }) => {
         console.log("ends");
         setIsLoading(false);
         openSnack("Poll deleted successfully", "success");
-        navigate("/");
+        logout();
       })
       .catch((error) => {
         console.log("error");

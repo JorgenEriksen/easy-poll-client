@@ -7,10 +7,12 @@ import {
 } from "../../../utils/apiRequests";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 
 const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
   const { openSnack } = useSnackbar();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const startPollButtonClick = () => {
@@ -34,7 +36,7 @@ const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
       .then(() => {
         setIsLoading(false);
         openSnack("Poll deleted successfully", "success");
-        navigate("/");
+        logout();
       })
       .catch((error) => {
         console.log("error");
