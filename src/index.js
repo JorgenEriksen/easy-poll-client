@@ -4,7 +4,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import LandingPage from "./pages/LandingPage";
 import CreatePollPage from "./pages/CreatePollPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Router } from "react-router-dom";
 import ColorChangingBackground from "./components/ColorChangingBackground";
 import { AuthProvider } from "./hooks/useAuth";
 import { useAuth } from "./hooks/useAuth";
@@ -22,20 +22,20 @@ const PollNavigator = ({ children }) => {
 const App = () => {
   return (
     <React.StrictMode>
-      <ColorChangingBackground>
-        <AuthProvider>
-          <SnackbarProvider>
-            <PollNavigator>
-              <BrowserRouter>
+      <BrowserRouter>
+        <ColorChangingBackground>
+          <AuthProvider>
+            <SnackbarProvider>
+              <PollNavigator>
                 <Routes>
                   <Route path="/create-poll" element={<CreatePollPage />} />
                   <Route path="/" element={<LandingPage />} />
                 </Routes>
-              </BrowserRouter>
-            </PollNavigator>
-          </SnackbarProvider>
-        </AuthProvider>
-      </ColorChangingBackground>
+              </PollNavigator>
+            </SnackbarProvider>
+          </AuthProvider>
+        </ColorChangingBackground>
+      </BrowserRouter>
     </React.StrictMode>
   );
 };

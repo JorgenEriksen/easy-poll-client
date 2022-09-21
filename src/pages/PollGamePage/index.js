@@ -32,6 +32,7 @@ const PollGamePage = () => {
     getPollGameDataAPI()
       .then((e) => {
         const data = e.result;
+        console.log(data);
         applyDataFromAPI(data);
         setIsLoading(false);
       })
@@ -110,7 +111,11 @@ const PollGamePage = () => {
             />
           )}
           {gameStatus == "Ended" && (
-            <ResultScreen results={results} tempUsers={tempUsers} />
+            <ResultScreen
+              results={results}
+              tempUsers={tempUsers}
+              isAdmin={isAdmin}
+            />
           )}
         </ContentLoader>
       </PaperBox>
