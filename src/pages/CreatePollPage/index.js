@@ -30,7 +30,6 @@ const classes = {
 const CreatePollPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [adminIsParticipating, setAdminIsParticipating] = useState(true);
   const [displayNameInput, setDisplayNameInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState([
@@ -47,7 +46,6 @@ const CreatePollPage = () => {
 
   const createPollGame = () => {
     const body = {
-      adminIsParticipating: adminIsParticipating,
       hasStarted: false,
       adminUser: {
         displayName: displayNameInput,
@@ -82,18 +80,6 @@ const CreatePollPage = () => {
       >
         Back
       </NavLink>
-
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={adminIsParticipating}
-              onChange={(e) => setAdminIsParticipating(e.target.checked)}
-            />
-          }
-          label="I will also vote"
-        />
-      </FormGroup>
       <TextField
         label="DisplayName"
         disabled={!adminIsParticipating}
