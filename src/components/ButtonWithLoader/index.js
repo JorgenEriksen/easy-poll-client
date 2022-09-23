@@ -1,11 +1,17 @@
 import { Button, CircularProgress } from "@mui/material";
 
-const ButtonWithLoader = ({ isLoading, onClick, style, children }) => {
+const ButtonWithLoader = ({
+  isLoading,
+  onClick,
+  style,
+  children,
+  disabled,
+}) => {
   return (
     <Button
       variant="contained"
       onClick={onClick}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       style={style}
     >
       {children}

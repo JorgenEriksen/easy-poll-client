@@ -15,15 +15,21 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useAuth } from "../../hooks/useAuth";
 import LinearProgress from "@mui/material/LinearProgress";
+import ButtonWithLoader from "../../components/ButtonWithLoader";
 
 const classes = {
+  displayNameInputContainer: css`
+    width: 100%;
+    margin-top: 10px;
+  `,
   width100: css`
     width: 100%;
   `,
+
   createPollButtonContainer: css`
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   `,
 };
 
@@ -80,14 +86,14 @@ const CreatePollPage = () => {
       >
         Back
       </NavLink>
-      <TextField
-        label="DisplayName"
-        disabled={!adminIsParticipating}
-        className={classes.width100}
-        value={displayNameInput}
-        onChange={(e) => setDisplayNameInput(e.target.value)}
-      />
-      <br />
+      <div className={classes.displayNameInputContainer}>
+        <TextField
+          label="DisplayName"
+          className={classes.width100}
+          value={displayNameInput}
+          onChange={(e) => setDisplayNameInput(e.target.value)}
+        />
+      </div>
       <br />
       <QuestionsForm questions={questions} setQuestions={setQuestions} />
       <br />
@@ -95,16 +101,14 @@ const CreatePollPage = () => {
       <Divider />
       <br />
       <div className={classes.createPollButtonContainer}>
-        <Button
-          variant="contained"
+        <ButtonWithLoader
           startIcon={<PollIcon />}
           onClick={createPollGame}
-          disabled={isLoading}
+          isLoading={isLoading}
         >
-          Create
-        </Button>
+          Create poll
+        </ButtonWithLoader>
       </div>
-      {isLoading && <LinearProgress />}
     </PaperBoxWithIcon>
   );
 };

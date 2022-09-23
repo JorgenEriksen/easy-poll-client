@@ -30,22 +30,6 @@ const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
       });
   };
 
-  const deletePollButtonClick = () => {
-    setIsLoading(true);
-    deletePollGameAPI()
-      .then(() => {
-        setIsLoading(false);
-        openSnack("Poll deleted successfully", "success");
-        logout();
-      })
-      .catch((error) => {
-        console.log("error");
-        console.log(error);
-        setIsLoading(false);
-        openSnack(error.message, "error");
-      });
-  };
-
   return (
     <div>
       <h2>Invite code: {inviteCode}</h2>
@@ -68,16 +52,6 @@ const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
             style={{ width: "100%" }}
           >
             Start Poll
-          </ButtonWithLoader>
-          <br />
-          <br />
-          <ButtonWithLoader
-            disabled={tempUsers.length < 2}
-            onClick={deletePollButtonClick}
-            isLoading={isLoading}
-            style={{ width: "100%" }}
-          >
-            Delete Poll
           </ButtonWithLoader>
         </div>
       )}

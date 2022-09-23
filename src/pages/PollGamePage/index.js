@@ -5,14 +5,23 @@ import PaperBox from "../../components/PaperBox";
 import WaitingScreen from "./components/WaitingScreen";
 import ResultScreen from "./components/ResultScreen";
 import PollScreen from "./components/PollScreen";
-import { getPollGameDataAPI } from "../../utils/apiRequests";
+import {
+  getPollGameDataAPI,
+  leavePollGameAPI,
+  deletePollGameAPI,
+} from "../../utils/apiRequests";
 import { useAuth } from "../../hooks/useAuth";
 import ContentLoader from "../../components/ContentLoader";
+import { Button } from "@mui/material";
+import ButtonWithLoader from "../../components/ButtonWithLoader";
+import { useSnackbar } from "../../hooks/useSnackbar";
+import ConfirmModal from "../../components/ConfirmModal";
 
 // https://elfsight.com/wp-content/uploads/2020/08/poll-builder-hero-image.png
 const PollGamePage = () => {
   const secondsBeforeRetryConnect = 5;
-  const { isAdmin } = useAuth();
+  const { openSnack } = useSnackbar();
+  const { isAdmin, logout } = useAuth();
   const [gameId, setGameId] = useState(0);
   const [hubConnection, setHubConnection] = useState();
   const [results, setResults] = useState({});
@@ -26,6 +35,8 @@ const PollGamePage = () => {
   const [inviteCode, setInviteCode] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [numberOfAnswers, setNumberOfAnswers] = useState(0);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openLeaveDialog, setOpenLeaveDialog] = useState(false);
   const [selectedAlternativeIndex, setSelectedAlternativeIndex] = useState(-1);
 
   useEffect(() => {
@@ -89,10 +100,57 @@ const PollGamePage = () => {
     }
   };
 
+  const leavePollGameClick = () => {
+    setIsLoading(true);
+    leavePollGameAPI()
+      .then(() => {
+        logout();
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+      });
+  };
+
+  const deletePollButtonClick = () => {
+    setIsLoading(true);
+    deletePollGameAPI()
+      .then(() => {
+        setIsLoading(false);
+        openSnack("Poll deleted successfully", "success");
+        logout();
+      })
+      .catch((error) => {
+        console.log("error");
+        console.log(error);
+        setIsLoading(false);
+        openSnack(error.message, "error");
+      });
+  };
+
   return (
     <PaperBoxContainer>
       <PaperBox style={{ width: "100%" }}>
         <ContentLoader isLoading={isLoading}>
+          {isAdmin && (
+            <ButtonWithLoader
+              onClick={() => setOpenDeleteDialog(true)}
+              isLoading={isLoading}
+              style={{ backgroundColor: "red" }}
+            >
+              Delete Poll
+            </ButtonWithLoader>
+          )}
+          {!isAdmin && (
+            <ButtonWithLoader
+              isLoading={isLoading}
+              onClick={() => setOpenLeaveDialog(true)}
+              style={{ backgroundColor: "red" }}
+            >
+              Leave poll
+            </ButtonWithLoader>
+          )}
           {gameStatus == "NotStarted" && (
             <WaitingScreen
               tempUsers={tempUsers}
@@ -119,6 +177,20 @@ const PollGamePage = () => {
           )}
         </ContentLoader>
       </PaperBox>
+      <ConfirmModal
+        openConfirmDialog={openDeleteDialog}
+        setOpenConfirmDialog={setOpenDeleteDialog}
+        confirmFunction={deletePollButtonClick}
+        dialogTitle="Delete poll"
+        dialogText="Are you sure you want to delete the poll?"
+      />
+      <ConfirmModal
+        openConfirmDialog={openLeaveDialog}
+        setOpenConfirmDialog={setOpenLeaveDialog}
+        confirmFunction={leavePollGameClick}
+        dialogTitle="Leave poll"
+        dialogText="Are you sure you want to leave the poll?"
+      />
     </PaperBoxContainer>
   );
 };

@@ -73,6 +73,14 @@ export const deletePollGameAPI = async () => {
   }
 };
 
+export const leavePollGameAPI = async () => {
+  try {
+    return await request(apiUrl + "TempUser", DELETE);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const request = async (url, requestType, body, params) => {
   let config = {
     headers: {
