@@ -1,25 +1,16 @@
 import { useState } from "react";
-import { Button, Typography, CircularProgress } from "@mui/material";
 import ButtonWithLoader from "../../../components/ButtonWithLoader";
-import {
-  startPollGameAPI,
-  deletePollGameAPI,
-} from "../../../utils/apiRequests";
+import { startPollGameAPI } from "../../../utils/apiRequests";
 import { useSnackbar } from "../../../hooks/useSnackbar";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 
 const WaitingScreen = ({ tempUsers, inviteCode, isAdmin }) => {
   const { openSnack } = useSnackbar();
-  const navigate = useNavigate();
-  const { logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const startPollButtonClick = () => {
     setIsLoading(true);
     startPollGameAPI()
       .then(() => {
-        console.log("starts");
         setIsLoading(false);
       })
       .catch((error) => {

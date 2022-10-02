@@ -35,6 +35,7 @@ const QuestionsForm = ({ questions, setQuestions }) => {
       width: 100%;
       display: flex;
       justify-content: center;
+      margin-bottom: 20px;
     `,
     createPollButtonContainer: css`
       width: 100%;

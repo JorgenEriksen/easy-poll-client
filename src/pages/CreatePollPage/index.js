@@ -20,7 +20,8 @@ import ButtonWithLoader from "../../components/ButtonWithLoader";
 const classes = {
   displayNameInputContainer: css`
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
   `,
   width100: css`
     width: 100%;
@@ -30,6 +31,7 @@ const classes = {
     width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 20px;
   `,
 };
 
@@ -94,12 +96,8 @@ const CreatePollPage = () => {
           onChange={(e) => setDisplayNameInput(e.target.value)}
         />
       </div>
-      <br />
       <QuestionsForm questions={questions} setQuestions={setQuestions} />
-      <br />
-      <br />
       <Divider />
-      <br />
       <div className={classes.createPollButtonContainer}>
         <ButtonWithLoader
           startIcon={<PollIcon />}

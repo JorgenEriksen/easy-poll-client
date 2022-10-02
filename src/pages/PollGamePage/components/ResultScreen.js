@@ -1,19 +1,8 @@
-import { Doughnut } from "react-chartjs-2";
 import BarChart from "../../../components/BarChart";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
-import ButtonWithLoader from "../../../components/ButtonWithLoader";
-import { deletePollGameAPI } from "../../../utils/apiRequests";
-import { useSnackbar } from "../../../hooks/useSnackbar";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 
 const ResultScreen = ({ results, tempUsers, isAdmin }) => {
   const [resultWithDisplayName, setResultWithDisplayName] = useState([]);
-  const { openSnack } = useSnackbar();
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     var resultWithDisplayNamePlaceholder = results.map((r) => {
@@ -25,26 +14,8 @@ const ResultScreen = ({ results, tempUsers, isAdmin }) => {
       });
       return r;
     });
-    console.log(resultWithDisplayNamePlaceholder);
     setResultWithDisplayName(resultWithDisplayNamePlaceholder);
   }, []);
-
-  const deletePollButtonClick = () => {
-    setIsLoading(true);
-    deletePollGameAPI()
-      .then(() => {
-        console.log("ends");
-        setIsLoading(false);
-        openSnack("Poll deleted successfully", "success");
-        logout();
-      })
-      .catch((error) => {
-        console.log("error");
-        console.log(error);
-        openSnack(error.message, "error");
-        setIsLoading(false);
-      });
-  };
 
   return (
     <div>
@@ -59,11 +30,6 @@ const ResultScreen = ({ results, tempUsers, isAdmin }) => {
           />
         </div>
       ))}
-      {isAdmin && (
-        <ButtonWithLoader isLoading={isLoading} onClick={deletePollButtonClick}>
-          Delete poll
-        </ButtonWithLoader>
-      )}
     </div>
   );
 };

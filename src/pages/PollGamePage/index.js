@@ -12,7 +12,6 @@ import {
 } from "../../utils/apiRequests";
 import { useAuth } from "../../hooks/useAuth";
 import ContentLoader from "../../components/ContentLoader";
-import { Button } from "@mui/material";
 import ButtonWithLoader from "../../components/ButtonWithLoader";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import ConfirmModal from "../../components/ConfirmModal";
@@ -24,7 +23,6 @@ const PollGamePage = () => {
   const { isAdmin, logout } = useAuth();
   const [gameId, setGameId] = useState(0);
   const [hubConnection, setHubConnection] = useState();
-  const [results, setResults] = useState({});
   const [question, setQuestion] = useState({
     title: "",
     questionAlternatives: [],
@@ -38,6 +36,8 @@ const PollGamePage = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openLeaveDialog, setOpenLeaveDialog] = useState(false);
   const [selectedAlternativeIndex, setSelectedAlternativeIndex] = useState(-1);
+  const [results, setResults] = useState({});
+  const [dataReceived, setDataReceived] = useState({});
 
   useEffect(() => {
     getPollGameDataAPI()
@@ -59,13 +59,17 @@ const PollGamePage = () => {
 
   useEffect(() => {
     if (hubConnection && gameId > 0) {
-      console.log("Connection!");
-      console.log(gameId);
       hubConnection.on("Socket-PollGameId-" + gameId, (dataFromAPI) => {
-        applyDataFromAPI(dataFromAPI);
+        setDataReceived(dataFromAPI);
       });
     }
   }, [hubConnection, gameId]);
+
+  useEffect(() => {
+    if (Object.keys(dataReceived).length > 0) {
+      applyDataFromAPI({ ...dataReceived });
+    }
+  }, [dataReceived]);
 
   const createHubConnection = async () => {
     const hubConnectionInit = new HubConnectionBuilder()
@@ -90,7 +94,7 @@ const PollGamePage = () => {
     setGameId(data.id);
     setTempUsers(data.tempUsers);
     setInviteCode(data.inviteCode);
-    setQuestion(data.question);
+    setQuestion({ ...data.question });
     setGameStatus(data.status);
     setResults(data.questions);
     setNumberOfAnswers(data.numberOfAnswers);
@@ -151,14 +155,14 @@ const PollGamePage = () => {
               Leave poll
             </ButtonWithLoader>
           )}
-          {gameStatus == "NotStarted" && (
+          {gameStatus === "NotStarted" && (
             <WaitingScreen
               tempUsers={tempUsers}
               isAdmin={isAdmin}
               inviteCode={inviteCode}
             />
           )}
-          {gameStatus == "Started" && (
+          {gameStatus === "Started" && (
             <PollScreen
               tempUsers={tempUsers}
               question={question}
@@ -168,7 +172,7 @@ const PollGamePage = () => {
               setSelectedAlternativeIndex={setSelectedAlternativeIndex}
             />
           )}
-          {gameStatus == "Ended" && (
+          {gameStatus === "Ended" && (
             <ResultScreen
               results={results}
               tempUsers={tempUsers}
