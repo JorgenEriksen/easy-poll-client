@@ -38,10 +38,6 @@ const classes = {
 };
 
 const BarChart = ({ result, numberOfUsers }) => {
-  useEffect(() => {
-    console.log(result);
-  }, []);
-
   return (
     <div className={classes.container}>
       {result.questionAlternatives.map((qa, index) => (

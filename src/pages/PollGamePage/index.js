@@ -43,7 +43,6 @@ const PollGamePage = () => {
     getPollGameDataAPI()
       .then((e) => {
         const data = e.result;
-        console.log(data);
         applyDataFromAPI(data);
         setIsLoading(false);
       })
@@ -90,7 +89,6 @@ const PollGamePage = () => {
   };
 
   const applyDataFromAPI = (data) => {
-    console.log(data);
     setGameId(data.id);
     setTempUsers(data.tempUsers);
     setInviteCode(data.inviteCode);
