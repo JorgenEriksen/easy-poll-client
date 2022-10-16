@@ -40,17 +40,7 @@ const CreatePollPage = () => {
   const navigate = useNavigate();
   const [displayNameInput, setDisplayNameInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [questions, setQuestions] = useState([
-    {
-      title: "Where to eat?",
-      questionAlternatives: ["Peppes", "Dominos"],
-    },
-    { title: "How many pizzas?", questionAlternatives: ["1", "2", "3"] },
-    {
-      title: "What to drink?",
-      questionAlternatives: ["Pepsi", "Solo", "Sprite", "7up"],
-    },
-  ]);
+  const [questions, setQuestions] = useState([]);
 
   const createPollGame = () => {
     const body = {
@@ -100,6 +90,7 @@ const CreatePollPage = () => {
       <Divider />
       <div className={classes.createPollButtonContainer}>
         <ButtonWithLoader
+          disabled={questions.length < 1 || displayNameInput.length < 1}
           startIcon={<PollIcon />}
           onClick={createPollGame}
           isLoading={isLoading}

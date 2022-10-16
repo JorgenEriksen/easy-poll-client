@@ -85,6 +85,13 @@ const AddEditQuestionDialog = ({
     setAlternatives(alternativesPlaceholder);
   };
 
+  const containsEmpty = () => {
+    for (let i = 0; i < alternatives.length; i++) {
+      if (alternatives[i].length < 1) return true;
+    }
+    return false;
+  };
+
   return (
     <Dialog onClose={() => setOpenDialog(false)} open={openDialog}>
       <DialogTitle>
@@ -127,7 +134,15 @@ const AddEditQuestionDialog = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={submit}>
+        <Button
+          autoFocus
+          onClick={submit}
+          disabled={
+            alternatives.length < 1 ||
+            questionTitle.length < 1 ||
+            containsEmpty()
+          }
+        >
           {editQuestionIndex >= 0 ? "Save changes" : "Add question"}
         </Button>
       </DialogActions>
